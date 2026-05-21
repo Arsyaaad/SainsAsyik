@@ -7,7 +7,7 @@ import { useState, useEffect, useRef } from "react";
 ══════════════════════════════════════════════ */
 const CONTEXTUAL_CHATS = [
   { id: 1, sender: "wakminah", name: "Wak Minah", role: "Pemilik Warung Kopi", avatar: "👵", text: "Bud! Tolong besarkan lagi api kompornya itu. Biar airnya makin cepat mendidih dan kopinya makin mantap panasnya!", delay: 0 },
-  { id: 2, sender: "budi", name: "Budi", role: "Siswa SMP (Keponakan)", avatar: "👦", text: "Eh, Wak... kalau airnya sudah mendidih bergolak begitu, mau apinya dibesarkan sampai sebesar api unggun pun suhunya tidak akan naik lagi dari 100°C, lho!", delay: 2000 },
+  { id: 2, sender: "budi", name: "Budi", role: "Siswa SMA (Keponakan)", avatar: "👦", text: "Eh, Wak... kalau airnya sudah mendidih bergolak begitu, mau apinya dibesarkan sampai sebesar api unggun pun suhunya tidak akan naik lagi dari 100°C, lho!", delay: 2000 },
   { id: 3, sender: "wakminah", name: "Wak Minah", role: "Pemilik Warung Kopi", avatar: "👵", text: "Hush, sembarangan kamu Bud! Logika dapur Wak ya kalau api makin besar, pasti airnya makin panas. Kamu ini belajar dari mana?", delay: 4500 },
   { id: 4, sender: "kalo", name: "KALO Bot", role: "Asisten Sains Virtual", avatar: "🤖", text: "Hai Wak Minah & Budi! Budi 100% benar. Ketika air sudah mencapai titik didihnya, kalor yang diberikan kompor bukan lagi digunakan untuk naik suhu, melainkan untuk mengubah wujud zat menjadi uap. Yuk kita buktikan di lab virtual!", delay: 7000 }
 ];
@@ -108,7 +108,7 @@ export default function App() {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-stone-900 font-brand">SainsAsyik: LMS Kalor</h1>
-              <p className="text-xs text-stone-500">Modul Pembelajaran Fisika Kontekstual - SMP Kelas VII</p>
+              <p className="text-xs text-stone-500">Modul Pembelajaran Fisika Kontekstual - SMA Kelas 11</p>
             </div>
           </div>
           
@@ -179,7 +179,7 @@ export default function App() {
 
       {/* Subtle Educational Footer */}
       <footer className="bg-stone-900 text-stone-400 py-6 text-center text-xs mt-12 border-t border-stone-800">
-        <p className="font-medium text-stone-300">Didesain untuk Media Pembelajaran Fisika SMP - Materi Suhu & Kalor</p>
+        <p className="font-medium text-stone-300">Didesain untuk Media Pembelajaran Fisika SMA - Materi Suhu & Kalor</p>
         <p className="text-stone-500 mt-1">© 2026 SainsAsyik LMS Platform. Hak Cipta Dilindungi.</p>
       </footer>
     </div>
@@ -236,7 +236,7 @@ function DeveloperView() {
               Halo! Saya adalah mahasiswa <strong>Program Studi Pendidikan Fisika</strong> yang memiliki ketertarikan pada pengembangan media pembelajaran berbasis teknologi.
             </p>
             <p>
-              Aplikasi <em>SainsAsyik: LMS Kalor</em> ini dirancang khusus untuk membawa konsep Fisika yang abstrak menjadi lebih nyata dan kontekstual. Dengan mengintegrasikan cerita kehidupan sehari-hari (seperti Dapur Wak Minah) dan simulasi praktikum virtual, diharapkan siswa SMP dapat lebih mudah menguasai materi Suhu, Kalor Sensibel, dan Kalor Laten.
+              Aplikasi <em>SainsAsyik: LMS Kalor</em> ini dirancang khusus untuk membawa konsep Fisika yang abstrak menjadi lebih nyata dan kontekstual. Dengan mengintegrasikan cerita kehidupan sehari-hari (seperti Dapur Wak Minah) dan simulasi praktikum virtual, diharapkan siswa dapat lebih mudah menguasai materi Suhu, Kalor Sensibel, dan Kalor Laten.
             </p>
             <div className="bg-stone-50 p-4 rounded-xl border border-stone-100 mt-4">
               <h3 className="font-bold text-stone-800 mb-2">Spesifikasi Media Pembelajaran:</h3>
