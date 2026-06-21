@@ -44,7 +44,7 @@ const LAB_EXPERIMENTS = [
   }
 ];
 
-// BANK SOAL (Ada 15 Soal untuk diacak menjadi 10 Soal tiap Kuis)
+// BANK SOAL (15 Soal)
 const QUIZ_BANK = [
   {
     id: 1, level: "C2 - Pemahaman",
@@ -183,9 +183,39 @@ const QUIZ_BANK = [
 ══════════════════════════════════════════════ */
 export default function App() {
   const [currentTab, setCurrentTab] = useState("dashboard");
-  const [userProgress, setUserProgress] = useState({ info: false, story: false, materi: false, lab: false, quiz: false });
-  const [quizScore, setQuizScore] = useState(null);
+  
+  // Menggunakan localStorage agar data tidak hilang saat direfresh
+  const [userProgress, setUserProgress] = useState(() => {
+    const saved = localStorage.getItem("lms_kalor_progress");
+    return saved ? JSON.parse(saved) : { info: false, story: false, materi: false, lab: false, quiz: false };
+  });
+  
+  const [quizScore, setQuizScore] = useState(() => {
+    const saved = localStorage.getItem("lms_kalor_score");
+    return saved ? JSON.parse(saved) : null;
+  });
+
   const [showPopup, setShowPopup] = useState(true);
+
+  // Sync data ke localStorage setiap kali ada perubahan
+  useEffect(() => {
+    localStorage.setItem("lms_kalor_progress", JSON.stringify(userProgress));
+  }, [userProgress]);
+
+  useEffect(() => {
+    localStorage.setItem("lms_kalor_score", JSON.stringify(quizScore));
+  }, [quizScore]);
+
+  // Fungsi Reset Data
+  const handleReset = () => {
+    if (window.confirm("Apakah Anda yakin ingin mereset seluruh progres pembelajaran Anda? Semua data akan dihapus.")) {
+      setUserProgress({ info: false, story: false, materi: false, lab: false, quiz: false });
+      setQuizScore(null);
+      setCurrentTab("dashboard");
+      localStorage.removeItem("lms_kalor_progress");
+      localStorage.removeItem("lms_kalor_score");
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[#FDFBF7] text-slate-800 antialiased flex flex-col selection:bg-amber-200 relative">
@@ -200,7 +230,7 @@ export default function App() {
             </div>
             <div>
               <h1 className="text-xl font-bold tracking-tight text-stone-900 font-brand">SainsAsyik: LMS Kalor</h1>
-              <p className="text-xs text-stone-500">Modul Pembelajaran Fisika Kontekstual</p>
+              <p className="text-xs text-stone-500">Modul Pembelajaran Fisika Kontekstual - SMP Kelas VII</p>
             </div>
           </div>
           
@@ -233,7 +263,7 @@ export default function App() {
 
       <main className="flex-1 max-w-6xl w-full mx-auto p-4 md:p-6 flex flex-col justify-start">
         {currentTab === "dashboard" && (
-          <DashboardView progress={userProgress} quizScore={quizScore} startModule={setCurrentTab} />
+          <DashboardView progress={userProgress} quizScore={quizScore} startModule={setCurrentTab} onReset={handleReset} />
         )}
         {currentTab === "info" && (
           <LearningObjectivesScreen onComplete={() => { setUserProgress(p => ({ ...p, info: true })); setCurrentTab("story"); }} />
@@ -256,7 +286,7 @@ export default function App() {
       </main>
 
       <footer className="bg-stone-900 text-stone-400 py-6 text-center text-xs mt-12 border-t border-stone-800">
-        <p className="font-medium text-stone-300">Didesain untuk Media Pembelajaran Fisika - Materi Suhu & Kalor</p>
+        <p className="font-medium text-stone-300">Didesain untuk Media Pembelajaran Fisika SMP - Materi Suhu & Kalor</p>
         <p className="text-stone-500 mt-1">© 2026 SainsAsyik LMS Platform. Hak Cipta Dilindungi.</p>
       </footer>
     </div>
@@ -275,7 +305,7 @@ function DeveloperPopup({ onClose }) {
         </div>
         <h2 className="text-2xl font-black text-stone-900 font-brand mb-2">Selamat Datang!</h2>
         <p className="text-sm text-stone-600 leading-relaxed mb-6">
-          Aplikasi LMS Fisika Materi Kalor ini dikembangkan oleh <strong>Arsyad Fathi M</strong>, Mahasiswa Pendidikan Fisika, sebagai media pembelajaran interaktif untuk memudahkan pemahaman sains.
+          Aplikasi LMS Fisika Materi Kalor ini dikembangkan oleh <strong>Arsyad</strong>, Mahasiswa Pendidikan Fisika, sebagai media pembelajaran interaktif untuk memudahkan pemahaman sains.
         </p>
         <button 
           onClick={onClose}
@@ -301,7 +331,7 @@ function DeveloperView() {
         </div>
         
         <div className="pt-16 pb-8 px-8">
-          <h2 className="text-3xl font-black text-stone-900 font-brand">Arsyad Fathi M</h2>
+          <h2 className="text-3xl font-black text-stone-900 font-brand">Arsyad</h2>
           <div className="inline-block mt-2 px-3 py-1 bg-orange-100 text-orange-700 font-bold text-xs rounded-full uppercase tracking-widest">
             Pengembang LMS
           </div>
@@ -311,17 +341,8 @@ function DeveloperView() {
               Halo! Saya adalah mahasiswa <strong>Program Studi Pendidikan Fisika</strong> yang memiliki ketertarikan pada pengembangan media pembelajaran berbasis teknologi.
             </p>
             <p>
-              Aplikasi <em>SainsAsyik: LMS Kalor</em> ini dirancang khusus untuk membawa konsep Fisika yang abstrak menjadi lebih nyata dan kontekstual. Dengan mengintegrasikan cerita kehidupan sehari-hari (seperti Dapur Wak Minah) dan simulasi praktikum virtual, diharapkan siswa dapat lebih mudah menguasai materi Suhu, Kalor Sensibel, dan Kalor Laten.
+              Aplikasi <em>SainsAsyik: LMS Kalor</em> ini dirancang khusus untuk membawa konsep Fisika yang abstrak menjadi lebih nyata dan kontekstual. Dengan mengintegrasikan cerita kehidupan sehari-hari (seperti Dapur Wak Minah) dan simulasi praktikum virtual, diharapkan siswa SMP dapat lebih mudah menguasai materi Suhu, Kalor Sensibel, dan Kalor Laten.
             </p>
-            <div className="bg-stone-50 p-4 rounded-xl border border-stone-100 mt-4">
-              <h3 className="font-bold text-stone-800 mb-2">Spesifikasi Media Pembelajaran:</h3>
-              <ul className="list-disc list-inside space-y-1 text-xs text-stone-500">
-                <li>Pendekatan: Contextual Teaching and Learning (CTL)</li>
-                <li>Materi Pokok: Perpindahan Kalor & Perubahan Wujud Zat</li>
-                <li>Tingkat Kognitif Kuis: C2 (Pemahaman) hingga C4 (Analisis) Bloom</li>
-                <li>Teknologi: React.js & Tailwind CSS</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
@@ -330,95 +351,154 @@ function DeveloperView() {
 }
 
 /* ══════════════════════════════════════════════
-   SCREEN 1: CP, TP, & PETA KONSEP
+   SCREEN 1: CP, TP, & PETA KONSEP (REVISED)
 ══════════════════════════════════════════════ */
 function LearningObjectivesScreen({ onComplete }) {
   return (
-    <div className="max-w-4xl mx-auto w-full space-y-6 animate-fadeIn">
+    <div className="max-w-5xl mx-auto w-full space-y-8 animate-fadeIn">
       <div className="text-center max-w-2xl mx-auto">
         <span className="text-xs font-bold text-orange-600 uppercase tracking-widest bg-orange-50 px-3 py-1 rounded-full">Sebelum Belajar Mulai</span>
         <h2 className="text-3xl font-black text-stone-900 font-brand mt-2">Target & Peta Pembelajaran</h2>
         <p className="text-xs text-stone-500 mt-1">Pahami capaian, tujuan pembelajaran, dan alur materi kalor berikut ini.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-        <div className="space-y-4">
-          <div className="bg-white p-5 rounded-2xl border border-stone-200/60 shadow-xs">
+      <div className="space-y-6">
+        {/* Row 1: CP & TP */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          <div className="bg-white p-5 rounded-2xl border border-stone-200/60 shadow-xs h-full">
             <div className="flex items-center gap-2 mb-2 text-orange-600 font-bold text-sm">
               <span>🎯</span>
               <h4>A. Capaian Pembelajaran (CP)</h4>
             </div>
             <p className="text-xs text-stone-600 leading-relaxed bg-stone-50 p-3 rounded-xl border border-stone-100">
-              Peserta didik dapat menjelaskan pengertian kalor, penerapannya dalam perubahan suhu dan wujud zat, serta dapat membedakan fenomena fisika dalam kehidupan sehari-hari.
+              Peserta didik dapat menjelaskan pengertian kalor, Asas Black dan penerapannya dalam perubahan suhu dan wujud, serta dapat menguraikan pemuaian panjang, luas, dan volume.
             </p>
           </div>
 
-          <div className="bg-white p-5 rounded-2xl border border-stone-200/60 shadow-xs">
-            <div className="flex items-center gap-2 mb-3 text-green-600 font-bold text-sm">
+          <div className="bg-white p-5 rounded-2xl border border-stone-200/60 shadow-xs h-full">
+            <div className="flex items-center gap-2 mb-3 text-blue-600 font-bold text-sm">
               <span>📋</span>
               <h4>B. Tujuan Pembelajaran (TP)</h4>
             </div>
             <div className="space-y-3 text-xs text-stone-600 leading-relaxed">
-              <div className="p-3 bg-rose-50/40 rounded-xl border border-rose-100/50">
-                <span className="font-bold text-blue-700 block mb-1">1. Peserta didik dapat menjelaskan mengapa suhu air tetap konstan saat mendidih meskipun pemanasan terus dilakukan.</span>
+              <div className="p-3 bg-blue-50/40 rounded-xl border border-blue-100/50">
+                <span className="font-bold text-blue-700 block mb-1">1. Materi Kalor Laten (Pemahaman - C2)</span>
+                Peserta didik dapat menjelaskan mengapa suhu air tetap konstan saat mendidih meskipun pemanasan terus dilakukan.
               </div>
               <div className="p-3 bg-rose-50/40 rounded-xl border border-rose-100/50">
-                <span className="font-bold text-rose-700 block mb-1">2. Peserta didik dapat menghitung besarnya energi kalor yang dibutuhkan untuk menaikkan suhu suatu zat.</span>
+                <span className="font-bold text-rose-700 block mb-1">2. Materi Kalor Sensibel (Aplikasi - C3)</span>
+                Peserta didik dapat menghitung besarnya energi kalor yang dibutuhkan untuk menaikkan suhu suatu zat.
               </div>
             </div>
           </div>
         </div>
 
-        <div className="bg-white p-6 rounded-2xl border border-stone-200/60 shadow-xs flex flex-col justify-between min-h-full">
-          <div>
-            <div className="flex items-center gap-2 mb-6 text-emerald-600 font-bold text-sm">
-              <span>🗺️</span>
-              <h4>C. Peta Konsep</h4>
-            </div>
-            
-            <div className="p-4 bg-stone-50/50 rounded-xl border border-stone-200/40 flex flex-col items-center pb-8">
-              <div className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black text-sm px-8 py-2.5 rounded-xl shadow-md z-10 border border-orange-600/20">
-                KALOR (Q)
+        {/* Row 2: Peta Konsep Full Width Berdasarkan Gambar */}
+        <div className="bg-white p-6 rounded-2xl border border-stone-200/60 shadow-xs flex flex-col justify-between">
+          <div className="flex items-center gap-2 mb-6 text-emerald-600 font-bold text-sm">
+            <span>🗺️</span>
+            <h4>C. Peta Konsep Materi</h4>
+          </div>
+          
+          <div className="w-full overflow-x-auto pb-4 hide-scrollbar bg-[#FAF9F5] rounded-xl border border-stone-200 p-6 shadow-inner">
+            <div className="min-w-[700px] flex flex-col items-center">
+              
+              {/* Root */}
+              <div className="bg-stone-800 text-white font-bold text-[12px] px-8 py-2.5 rounded-lg shadow-sm border border-stone-900 z-10">
+                SUHU, KALOR DAN PEMUAIAN
               </div>
-              
-              <div className="w-0.5 h-6 bg-stone-300"></div>
-              
-              <div className="w-full max-w-[280px] h-0.5 bg-stone-300 relative">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-stone-50/50 px-2 text-[9px] text-stone-400 font-bold uppercase">
-                  Fungsi Utama
-                </div>
+
+              {/* Vertical Trunk & Horizontal Branching */}
+              <div className="w-px h-6 bg-stone-400"></div>
+              <div className="w-full max-w-[620px] h-px bg-stone-400 relative"></div>
+              <div className="w-full max-w-[620px] flex justify-between">
+                <div className="w-px h-6 bg-stone-400"></div>
+                <div className="w-px h-6 bg-stone-400"></div>
+                <div className="w-px h-6 bg-stone-400"></div>
               </div>
-              
-              <div className="flex justify-between w-full max-w-[280px]">
-                <div className="w-0.5 h-6 bg-stone-300"></div>
-                <div className="w-0.5 h-6 bg-stone-300"></div>
-              </div>
-              
-              <div className="flex justify-between w-full gap-4">
-                <div className="flex-1 bg-white p-3.5 rounded-xl border-2 border-rose-200 text-center shadow-sm relative hover:-translate-y-1 transition-transform">
-                  <div className="font-black text-rose-600 text-[11px] uppercase tracking-wider mb-2">Kalor Sensibel</div>
-                  <div className="text-[10px] text-stone-500 leading-tight mb-2">
-                    Mengubah<br/><span className="font-bold text-rose-500">Suhu Zat</span><br/>(Suhu Naik/Turun)
-                  </div>
-                  <div className="bg-rose-50 border border-rose-100 rounded-lg text-rose-800 font-mono font-bold text-[10px] py-1.5 shadow-inner">
-                    Q = m · c · ΔT
+
+              {/* Tiga Cabang Utama */}
+              <div className="w-full max-w-[680px] flex justify-between gap-4 items-start">
+                
+                {/* Cabang 1: SUHU */}
+                <div className="flex flex-col items-center w-[30%]">
+                  <div className="bg-white border-2 border-rose-300 text-rose-700 font-bold text-[11px] px-6 py-2 rounded-md mb-4 w-full text-center shadow-xs">SUHU</div>
+                  
+                  <div className="flex gap-2 w-full justify-center relative">
+                    <div className="absolute -top-4 w-[60%] h-px bg-stone-400"></div>
+                    <div className="absolute -top-4 left-[20%] w-px h-4 bg-stone-400"></div>
+                    <div className="absolute -top-4 right-[20%] w-px h-4 bg-stone-400"></div>
+
+                    <div className="flex flex-col items-center w-1/2">
+                      <span className="text-[9px] text-stone-500 mb-1">diukur dengan</span>
+                      <div className="bg-rose-50 border border-rose-200 text-rose-800 text-[10px] py-1.5 px-2 rounded-md text-center w-full">Termometer</div>
+                    </div>
+                    <div className="flex flex-col items-center w-1/2">
+                      <span className="text-[9px] text-transparent mb-1">-</span>
+                      <div className="bg-rose-50 border border-rose-200 text-rose-800 text-[10px] py-1.5 px-2 rounded-md text-center w-full">Skala Suhu</div>
+                    </div>
                   </div>
                 </div>
 
-                <div className="flex-1 bg-white p-3.5 rounded-xl border-2 border-sky-200 text-center shadow-sm relative hover:-translate-y-1 transition-transform">
-                  <div className="font-black text-sky-600 text-[11px] uppercase tracking-wider mb-2">Kalor Laten</div>
-                  <div className="text-[10px] text-stone-500 leading-tight mb-2">
-                    Mengubah<br/><span className="font-bold text-sky-500">Wujud Zat</span><br/>(Suhu Konstan)
-                  </div>
-                  <div className="bg-sky-50 border border-sky-100 rounded-lg text-sky-800 font-mono font-bold text-[10px] py-1.5 shadow-inner">
-                    Q = m · L
+                {/* Cabang 2: KALOR */}
+                <div className="flex flex-col items-center w-[40%]">
+                  <div className="bg-white border-2 border-sky-300 text-sky-700 font-bold text-[11px] px-6 py-2 rounded-md mb-4 w-full text-center shadow-xs">KALOR</div>
+                  
+                  <div className="flex gap-2 w-full justify-between relative">
+                    <div className="absolute -top-4 w-[80%] left-[10%] h-px bg-stone-400"></div>
+                    <div className="absolute -top-4 left-[10%] w-px h-4 bg-stone-400"></div>
+                    <div className="absolute -top-4 left-1/2 w-px h-4 bg-stone-400"></div>
+                    <div className="absolute -top-4 right-[10%] w-px h-4 bg-stone-400"></div>
+
+                    <div className="flex flex-col items-center w-1/3">
+                      <div className="bg-sky-50 border border-sky-200 text-sky-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Perpindahan Kalor</div>
+                      <div className="w-px h-4 bg-stone-400"></div>
+                      <div className="bg-sky-100 border border-sky-300 text-sky-900 text-[9px] py-1.5 px-1 rounded-md text-center w-full">Konduksi, Konveksi, Radiasi</div>
+                    </div>
+                    
+                    <div className="flex flex-col items-center w-1/3">
+                      <div className="bg-sky-50 border border-sky-200 text-sky-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Mengubah Suhu Zat</div>
+                    </div>
+
+                    <div className="flex flex-col items-center w-1/3">
+                      <div className="bg-sky-50 border border-sky-200 text-sky-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Mengubah Wujud Zat</div>
+                      <div className="w-px h-4 bg-stone-400"></div>
+                      <div className="bg-sky-100 border border-sky-300 text-sky-900 text-[9px] py-1.5 px-1 rounded-md text-center w-full">Mencair, Membeku, Menguap, Mengembun, Menyublim, Mengkristal</div>
+                    </div>
                   </div>
                 </div>
+
+                {/* Cabang 3: PEMUAIAN */}
+                <div className="flex flex-col items-center w-[30%]">
+                  <div className="bg-white border-2 border-emerald-300 text-emerald-700 font-bold text-[11px] px-6 py-2 rounded-md mb-4 w-full text-center shadow-xs">PEMUAIAN</div>
+                  
+                  <div className="flex gap-2 w-full justify-between relative">
+                    <div className="absolute -top-4 w-[70%] left-[15%] h-px bg-stone-400"></div>
+                    <div className="absolute -top-4 left-[15%] w-px h-4 bg-stone-400"></div>
+                    <div className="absolute -top-4 left-1/2 w-px h-4 bg-stone-400"></div>
+                    <div className="absolute -top-4 right-[15%] w-px h-4 bg-stone-400"></div>
+
+                    <div className="flex flex-col items-center w-1/3">
+                      <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Pemuaian Zat Padat</div>
+                      <div className="w-px h-4 bg-stone-400"></div>
+                      <div className="bg-emerald-100 border border-emerald-300 text-emerald-900 text-[9px] py-1.5 px-1 rounded-md text-center w-full">Panjang, Luas, Volume</div>
+                    </div>
+
+                    <div className="flex flex-col items-center w-1/3">
+                      <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Pemuaian Zat Cair</div>
+                    </div>
+
+                    <div className="flex flex-col items-center w-1/3">
+                      <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Pemuaian Zat Gas</div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
 
-          <button onClick={onComplete} className="w-full mt-6 py-3.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer shadow-sm transition-all text-center">
+          <button onClick={onComplete} className="w-full mt-6 py-4 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer shadow-md transition-all text-center active:scale-95">
             Mulai Belajar Masuk Cerita →
           </button>
         </div>
@@ -831,7 +911,6 @@ function QuizView({ onComplete }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [totalCorrectCount, setTotalCorrectCount] = useState(0);
 
-  // Algoritma Fisher-Yates Shuffle untuk mengacak 15 bank soal dan memotong 10 soal
   useEffect(() => {
     const shuffleArray = (array) => {
       let newArr = [...array];
@@ -842,12 +921,11 @@ function QuizView({ onComplete }) {
       return newArr;
     };
     
-    // Pilih 10 soal unik secara acak setiap kali quiz dirender
+    // Pilih 10 soal unik secara acak
     const randomized = shuffleArray(QUIZ_BANK).slice(0, 10);
     setActiveQuestions(randomized);
   }, []);
 
-  // Mencegah error render jika belum diacak
   if (activeQuestions.length === 0) return null;
 
   const currentQuestion = activeQuestions[currentIdx];
@@ -961,9 +1039,9 @@ function QuizView({ onComplete }) {
 }
 
 /* ══════════════════════════════════════════════
-   DASHBOARD VIEW
+   DASHBOARD VIEW (WITH PERFORMANCE REPORT & RESET)
 ══════════════════════════════════════════════ */
-function DashboardView({ progress, quizScore, startModule }) {
+function DashboardView({ progress, quizScore, startModule, onReset }) {
   const getProgressPercent = () => {
     let count = 0;
     if (progress.info) count += 20;
@@ -974,17 +1052,32 @@ function DashboardView({ progress, quizScore, startModule }) {
     return count;
   };
 
+  const isComplete = getProgressPercent() === 100;
+
   return (
     <div className="space-y-6 max-w-4xl mx-auto w-full animate-fadeIn">
-      <div className="bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-transparent rounded-3xl p-6 border border-amber-500/20 flex flex-col md:flex-row items-center gap-6 shadow-sm">
-        <div className="text-5xl drop-shadow-md">☕</div>
-        <div className="space-y-1 text-center md:text-left">
-          <h2 className="text-2xl font-extrabold text-stone-900 font-brand">Selamat Datang di Modul Fisika!</h2>
-          <p className="text-sm text-stone-600 max-w-xl">
-            Mari pelajari rahasia sains Suhu & Kalor dengan membantu Wak Minah memasak air di dapur agar hemat gas elpiji.
-          </p>
-        </div>
+      
+      {/* Tombol Reset */}
+      <div className="flex justify-end">
+        <button onClick={onReset} className="text-[10px] uppercase tracking-widest bg-rose-50 text-rose-600 px-4 py-2 rounded-lg font-bold hover:bg-rose-100 border border-rose-200 transition-all cursor-pointer">
+          🔄 Reset Semua Progres Belajar
+        </button>
       </div>
+
+      {/* Tampilkan Laporan Hasil Evaluasi jika selesai 100% */}
+      {isComplete ? (
+        <PerformanceReport score={quizScore} />
+      ) : (
+        <div className="bg-gradient-to-r from-amber-500/10 via-orange-500/5 to-transparent rounded-3xl p-6 border border-amber-500/20 flex flex-col md:flex-row items-center gap-6 shadow-sm">
+          <div className="text-5xl drop-shadow-md">☕</div>
+          <div className="space-y-1 text-center md:text-left">
+            <h2 className="text-2xl font-extrabold text-stone-900 font-brand">Selamat Datang di Modul Fisika!</h2>
+            <p className="text-sm text-stone-600 max-w-xl">
+              Mari pelajari rahasia sains Suhu & Kalor dengan membantu Wak Minah memasak air di dapur agar hemat gas elpiji.
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         <div className="bg-white rounded-2xl p-5 border border-stone-200/60 shadow-xs flex flex-col justify-between hover:border-orange-200 transition-colors">
@@ -1060,10 +1153,10 @@ function DashboardView({ progress, quizScore, startModule }) {
               </span>
             </div>
             <h3 className="font-bold text-sm text-stone-900 font-brand">5. Kuis Evaluasi</h3>
-            <p className="text-xs text-stone-500 mt-1 leading-relaxed">Uji penguasaan konsep fisika Anda melalui kuis.</p>
+            <p className="text-xs text-stone-500 mt-1 leading-relaxed">Uji penguasaan konsep fisika Anda melalui kuis acak.</p>
           </div>
           <button onClick={() => startModule("quiz")} className="w-full mt-4 py-2 bg-stone-900 hover:bg-stone-800 text-white rounded-xl text-xs font-bold cursor-pointer transition-all shadow-sm">
-            {progress.quiz ? `Ulangi (Skor: ${quizScore}%)` : "Mulai Ujian"}
+            {progress.quiz ? `Ulangi (Skor Terakhir: ${quizScore}%)` : "Mulai Ujian"}
           </button>
         </div>
 
@@ -1076,6 +1169,49 @@ function DashboardView({ progress, quizScore, startModule }) {
         </div>
         <div className="w-full h-3 bg-stone-100 rounded-full overflow-hidden shadow-inner">
           <div className="h-full bg-gradient-to-r from-amber-500 to-orange-600 transition-all duration-700" style={{ width: `${getProgressPercent()}%` }} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Komponen Evaluasi Akhir (Tampil saat progress 100%)
+function PerformanceReport({ score }) {
+  let predikat = "";
+  let pesan = "";
+  
+  if (score >= 90) { 
+    predikat = "Sangat Baik"; 
+    pesan = "Luar biasa! Pemahaman Anda tentang Suhu, Kalor, dan Pemuaian sangat mantap. Anda sudah seperti ilmuwan fisika!"; 
+  } else if (score >= 70) { 
+    predikat = "Baik"; 
+    pesan = "Bagus sekali! Anda sudah memahami konsep dasar dengan baik, mari pertahankan dan tingkatkan lagi detailnya."; 
+  } else { 
+    predikat = "Perlu Peningkatan"; 
+    pesan = "Jangan menyerah! Fisika butuh pembiasaan. Silakan ulangi materi dan uji kuis ini kembali, soalnya pasti berubah kok."; 
+  }
+
+  return (
+    <div className="bg-gradient-to-tr from-sky-600 to-blue-800 rounded-3xl p-6 md:p-8 text-white shadow-lg space-y-4 relative overflow-hidden">
+      <div className="absolute top-0 right-0 p-4 text-8xl opacity-10 rotate-12">🎓</div>
+      
+      <div className="relative z-10">
+        <h3 className="text-2xl md:text-3xl font-black font-brand mb-1">🎉 Selamat, Evaluasi Selesai!</h3>
+        <p className="text-sm text-sky-100 mb-6">Berikut adalah laporan hasil performa belajar Anda secara keseluruhan:</p>
+        
+        <div className="grid grid-cols-2 gap-4 md:gap-6 mt-4">
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-5 rounded-2xl border border-white/20">
+            <div className="text-[10px] md:text-xs uppercase tracking-widest mb-1 text-sky-200 font-bold">Skor Evaluasi (10 Soal Acak)</div>
+            <div className="text-4xl font-black">{score}%</div>
+          </div>
+          <div className="bg-white/10 backdrop-blur-md p-4 md:p-5 rounded-2xl border border-white/20">
+            <div className="text-[10px] md:text-xs uppercase tracking-widest mb-1 text-sky-200 font-bold">Predikat Pencapaian</div>
+            <div className="text-xl md:text-2xl font-black mt-1 leading-tight">{predikat}</div>
+          </div>
+        </div>
+        
+        <div className="bg-sky-900/40 p-4 rounded-xl text-sm italic border border-sky-400/20 mt-6 leading-relaxed">
+          " {pesan} "
         </div>
       </div>
     </div>
