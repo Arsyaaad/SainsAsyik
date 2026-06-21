@@ -305,7 +305,7 @@ function DeveloperPopup({ onClose }) {
         </div>
         <h2 className="text-2xl font-black text-stone-900 font-brand mb-2">Selamat Datang!</h2>
         <p className="text-sm text-stone-600 leading-relaxed mb-6">
-          Aplikasi LMS Fisika Materi Kalor ini dikembangkan oleh <strong>Arsyad</strong>, Mahasiswa Pendidikan Fisika, sebagai media pembelajaran interaktif untuk memudahkan pemahaman sains.
+          Aplikasi LMS Fisika Materi Kalor ini dikembangkan oleh <strong>Arsyad Fathi Mawardi</strong>, Mahasiswa Pendidikan Fisika, sebagai media pembelajaran interaktif untuk memudahkan pemahaman sains.
         </p>
         <button 
           onClick={onClose}
@@ -331,7 +331,7 @@ function DeveloperView() {
         </div>
         
         <div className="pt-16 pb-8 px-8">
-          <h2 className="text-3xl font-black text-stone-900 font-brand">Arsyad</h2>
+          <h2 className="text-3xl font-black text-stone-900 font-brand">Arsyad Fathi Mawardi</h2>
           <div className="inline-block mt-2 px-3 py-1 bg-orange-100 text-orange-700 font-bold text-xs rounded-full uppercase tracking-widest">
             Pengembang LMS
           </div>
@@ -352,6 +352,9 @@ function DeveloperView() {
 
 /* ══════════════════════════════════════════════
    SCREEN 1: CP, TP, & PETA KONSEP (REVISED)
+══════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════
+   SCREEN 1: CP, TP, & PETA KONSEP (REVISED TO IMAGE)
 ══════════════════════════════════════════════ */
 function LearningObjectivesScreen({ onComplete }) {
   return (
@@ -393,109 +396,20 @@ function LearningObjectivesScreen({ onComplete }) {
           </div>
         </div>
 
-        {/* Row 2: Peta Konsep Full Width Berdasarkan Gambar */}
+        {/* Row 2: Peta Konsep Gambar */}
         <div className="bg-white p-6 rounded-2xl border border-stone-200/60 shadow-xs flex flex-col justify-between">
           <div className="flex items-center gap-2 mb-6 text-emerald-600 font-bold text-sm">
             <span>🗺️</span>
             <h4>C. Peta Konsep Materi</h4>
           </div>
           
-          <div className="w-full overflow-x-auto pb-4 hide-scrollbar bg-[#FAF9F5] rounded-xl border border-stone-200 p-6 shadow-inner">
-            <div className="min-w-[700px] flex flex-col items-center">
-              
-              {/* Root */}
-              <div className="bg-stone-800 text-white font-bold text-[12px] px-8 py-2.5 rounded-lg shadow-sm border border-stone-900 z-10">
-                SUHU, KALOR DAN PEMUAIAN
-              </div>
-
-              {/* Vertical Trunk & Horizontal Branching */}
-              <div className="w-px h-6 bg-stone-400"></div>
-              <div className="w-full max-w-[620px] h-px bg-stone-400 relative"></div>
-              <div className="w-full max-w-[620px] flex justify-between">
-                <div className="w-px h-6 bg-stone-400"></div>
-                <div className="w-px h-6 bg-stone-400"></div>
-                <div className="w-px h-6 bg-stone-400"></div>
-              </div>
-
-              {/* Tiga Cabang Utama */}
-              <div className="w-full max-w-[680px] flex justify-between gap-4 items-start">
-                
-                {/* Cabang 1: SUHU */}
-                <div className="flex flex-col items-center w-[30%]">
-                  <div className="bg-white border-2 border-rose-300 text-rose-700 font-bold text-[11px] px-6 py-2 rounded-md mb-4 w-full text-center shadow-xs">SUHU</div>
-                  
-                  <div className="flex gap-2 w-full justify-center relative">
-                    <div className="absolute -top-4 w-[60%] h-px bg-stone-400"></div>
-                    <div className="absolute -top-4 left-[20%] w-px h-4 bg-stone-400"></div>
-                    <div className="absolute -top-4 right-[20%] w-px h-4 bg-stone-400"></div>
-
-                    <div className="flex flex-col items-center w-1/2">
-                      <span className="text-[9px] text-stone-500 mb-1">diukur dengan</span>
-                      <div className="bg-rose-50 border border-rose-200 text-rose-800 text-[10px] py-1.5 px-2 rounded-md text-center w-full">Termometer</div>
-                    </div>
-                    <div className="flex flex-col items-center w-1/2">
-                      <span className="text-[9px] text-transparent mb-1">-</span>
-                      <div className="bg-rose-50 border border-rose-200 text-rose-800 text-[10px] py-1.5 px-2 rounded-md text-center w-full">Skala Suhu</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cabang 2: KALOR */}
-                <div className="flex flex-col items-center w-[40%]">
-                  <div className="bg-white border-2 border-sky-300 text-sky-700 font-bold text-[11px] px-6 py-2 rounded-md mb-4 w-full text-center shadow-xs">KALOR</div>
-                  
-                  <div className="flex gap-2 w-full justify-between relative">
-                    <div className="absolute -top-4 w-[80%] left-[10%] h-px bg-stone-400"></div>
-                    <div className="absolute -top-4 left-[10%] w-px h-4 bg-stone-400"></div>
-                    <div className="absolute -top-4 left-1/2 w-px h-4 bg-stone-400"></div>
-                    <div className="absolute -top-4 right-[10%] w-px h-4 bg-stone-400"></div>
-
-                    <div className="flex flex-col items-center w-1/3">
-                      <div className="bg-sky-50 border border-sky-200 text-sky-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Perpindahan Kalor</div>
-                      <div className="w-px h-4 bg-stone-400"></div>
-                      <div className="bg-sky-100 border border-sky-300 text-sky-900 text-[9px] py-1.5 px-1 rounded-md text-center w-full">Konduksi, Konveksi, Radiasi</div>
-                    </div>
-                    
-                    <div className="flex flex-col items-center w-1/3">
-                      <div className="bg-sky-50 border border-sky-200 text-sky-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Mengubah Suhu Zat</div>
-                    </div>
-
-                    <div className="flex flex-col items-center w-1/3">
-                      <div className="bg-sky-50 border border-sky-200 text-sky-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Mengubah Wujud Zat</div>
-                      <div className="w-px h-4 bg-stone-400"></div>
-                      <div className="bg-sky-100 border border-sky-300 text-sky-900 text-[9px] py-1.5 px-1 rounded-md text-center w-full">Mencair, Membeku, Menguap, Mengembun, Menyublim, Mengkristal</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cabang 3: PEMUAIAN */}
-                <div className="flex flex-col items-center w-[30%]">
-                  <div className="bg-white border-2 border-emerald-300 text-emerald-700 font-bold text-[11px] px-6 py-2 rounded-md mb-4 w-full text-center shadow-xs">PEMUAIAN</div>
-                  
-                  <div className="flex gap-2 w-full justify-between relative">
-                    <div className="absolute -top-4 w-[70%] left-[15%] h-px bg-stone-400"></div>
-                    <div className="absolute -top-4 left-[15%] w-px h-4 bg-stone-400"></div>
-                    <div className="absolute -top-4 left-1/2 w-px h-4 bg-stone-400"></div>
-                    <div className="absolute -top-4 right-[15%] w-px h-4 bg-stone-400"></div>
-
-                    <div className="flex flex-col items-center w-1/3">
-                      <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Pemuaian Zat Padat</div>
-                      <div className="w-px h-4 bg-stone-400"></div>
-                      <div className="bg-emerald-100 border border-emerald-300 text-emerald-900 text-[9px] py-1.5 px-1 rounded-md text-center w-full">Panjang, Luas, Volume</div>
-                    </div>
-
-                    <div className="flex flex-col items-center w-1/3">
-                      <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Pemuaian Zat Cair</div>
-                    </div>
-
-                    <div className="flex flex-col items-center w-1/3">
-                      <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-[10px] py-1.5 px-1 rounded-md text-center w-full min-h-[40px] flex items-center justify-center">Pemuaian Zat Gas</div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-            </div>
+          {/* Menampilkan Gambar Asli dari Folder Public */}
+          <div className="w-full bg-[#FAF9F5] rounded-xl border border-stone-200 p-2 shadow-inner flex justify-center">
+            <img 
+              src="/peta-konsep.png" 
+              alt="Peta Konsep Suhu dan Kalor" 
+              className="max-w-full h-auto rounded-lg object-contain"
+            />
           </div>
 
           <button onClick={onComplete} className="w-full mt-6 py-4 bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold uppercase tracking-wider rounded-xl cursor-pointer shadow-md transition-all text-center active:scale-95">
